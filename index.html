@@ -80,7 +80,7 @@
   <script>
     async function atualizarLances() {
       try {
-        const resGremio = await fetch('https://script.google.com/macros/s/AKfycbz6HUiKP78tUlsZpKK2E5Ss30t5weFCtOzfcF19Cj0qyHx5P4KzXCKjp8kxzM9Qf5w/exec');
+        const resGremio = await fetch('https://script.google.com/macros/s/AKfycbyy4s4srlxGVTPKDxozq1BfqErisXOxJaIA3gm2_MeCoKZPhAbPCzwRBdg4iWONVIcW/exec');
         const dataGremio = await resGremio.json();
         document.getElementById("ultimo-lance-gremio").textContent = dataGremio.highestBid.toFixed(2);
         const resInter = await fetch('https://script.google.com/macros/s/AKfycbyqGIXbBzTln0Tq4N4554t9L5oJYoqraRmL05u0HkbJcUvKNmZI3h4CxPX2Ra-bIds/exec');
