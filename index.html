@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Camisas autografadas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Camisas Autografadas</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -57,7 +56,7 @@
       margin: 1rem 0;
       text-align: center;
     }
-    a button {
+    button {
       width: 100%;
       padding: 10px;
       font-size: 1rem;
@@ -67,13 +66,51 @@
       border: none;
       cursor: pointer;
     }
-    a button:hover {
+    button:hover {
       background-color: #0056b3;
     }
+
+    /* Modal */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    #modal .content {
+      background: white;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    #modal iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    #modal button.close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
       .shirt-container {
         flex-direction: column;
         align-items: center;
+      }
+      #modal iframe {
+        height: 80vh;
       }
     }
   </style>
@@ -83,6 +120,7 @@
         const resGremio = await fetch('https://script.google.com/macros/s/AKfycbyy4s4srlxGVTPKDxozq1BfqErisXOxJaIA3gm2_MeCoKZPhAbPCzwRBdg4iWONVIcW/exec');
         const dataGremio = await resGremio.json();
         document.getElementById("ultimo-lance-gremio").textContent = dataGremio.highestBid.toFixed(2);
+
         const resInter = await fetch('https://script.google.com/macros/s/AKfycbyqGIXbBzTln0Tq4N4554t9L5oJYoqraRmL05u0HkbJcUvKNmZI3h4CxPX2Ra-bIds/exec');
         const dataInter = await resInter.json();
         document.getElementById("ultimo-lance-inter").textContent = dataInter.highestBid.toFixed(2);
@@ -90,32 +128,52 @@
         console.error("Erro ao buscar lances:", e);
       }
     }
+
+    function abrirModal(url) {
+      document.getElementById("formFrame").src = url;
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function fecharModal() {
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("formFrame").src = "";
+    }
+
     document.addEventListener("DOMContentLoaded", atualizarLances);
   </script>
 </head>
 <body>
-<header>
-  <h1>Camisas Autografadas</h1>
-</header>
-<main>
-  <div class="description">
-    <p>Participe desta iniciativa e leva para casa uma destas Camisas Oficiais Autografadas.!</p>
-    <p>Preencha o formulário com seu LANCE.<br>O maior lance até o dia 15/06 será o vencedor. <br> Qual camiseta vale mais? <br>Boa sorte!</p>
-  </div>
-  <div class="shirt-container">
-    <div class="shirt">
-      <h2>Camisa do Grêmio</h2>
-      <div class="gallery"><img src="Gremio.jpg" alt="Camisa Grêmio Autografada"></div>
-      <div class="last-bid">Último lance: R$ <span id="ultimo-lance-gremio">...</span></div>
-      <a href="https://forms.gle/yVvRg9rxGCzUSuW78" target="_blank"><button>Enviar lance para o Grêmio</button></a>
+  <header>
+    <h1>Camisas Autografadas</h1>
+  </header>
+  <main>
+    <div class="description">
+      <p>Participe desta iniciativa e leve para casa uma destas Camisas Oficiais Autografadas!</p>
+      <p>Preencha o formulário com seu LANCE.<br>O maior lance até o dia 15/06 será o vencedor.<br> Qual camiseta vale mais?<br>Boa sorte!</p>
     </div>
-    <div class="shirt">
-      <h2>Camisa do Inter</h2>
-      <div class="gallery"><img src="Inter.jpg" alt="Camisa Internacional Autografada"></div>
-      <div class="last-bid">Último lance: R$ <span id="ultimo-lance-inter">...</span></div>
-      <a href="https://forms.gle/6NwqzVHN2xJB21o17" target="_blank"><button>Enviar lance para o Internacional</button></a>
+
+    <div class="shirt-container">
+      <div class="shirt">
+        <h2>Camisa do Grêmio</h2>
+        <div class="gallery"><img src="Gremio.jpg" alt="Camisa Grêmio Autografada"></div>
+        <div class="last-bid">Último lance: R$ <span id="ultimo-lance-gremio">...</span></div>
+        <button onclick="abrirModal('https://forms.gle/yVvRg9rxGCzUSuW78')">Enviar lance para o Grêmio</button>
+      </div>
+      <div class="shirt">
+        <h2>Camisa do Inter</h2>
+        <div class="gallery"><img src="Inter.jpg" alt="Camisa Internacional Autografada"></div>
+        <div class="last-bid">Último lance: R$ <span id="ultimo-lance-inter">...</span></div>
+        <button onclick="abrirModal('https://forms.gle/6NwqzVHN2xJB21o17')">Enviar lance para o Internacional</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal">
+    <div class="content">
+      <button class="close" onclick="fecharModal()">&times;</button>
+      <iframe id="formFrame" src=""></iframe>
     </div>
   </div>
-</main>
 </body>
 </html>
